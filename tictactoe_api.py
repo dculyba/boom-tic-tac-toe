@@ -32,11 +32,12 @@ from tictactoe_api_messages import ScoreResponseMessage
 
 
 CLIENT_ID = '1094701022180-qaeq915rn52o30124mpfe5ci230jeih6.apps.googleusercontent.com'
+LOCAL_HOST_CLIENT_ID = '1094701022180-69nqoj960881lhqlav47qhi1jaij1n9o.apps.googleusercontent.com'
 
 
 @endpoints.api(name='tictactoe', version='v1',
                description='Tic Tac Toe API',
-               allowed_client_ids=[CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID])
+               allowed_client_ids=[CLIENT_ID, LOCAL_HOST_CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID])
 class TicTacToeApi(remote.Service):
     """Class which defines tictactoe API v1."""
 
@@ -101,7 +102,7 @@ class TicTacToeApi(remote.Service):
         elif request.order == ScoresListRequest.Order.WHEN:
             query = query.order(-Score.played)
         items = [entity.to_message() for entity in query.fetch(request.limit)]
-        return ScoresListResponse(items=items)
+        return ScoresListResponse(questions=items)
 
     @endpoints.method(ScoreRequestMessage, ScoreResponseMessage,
                       path='scores', http_method='POST',
